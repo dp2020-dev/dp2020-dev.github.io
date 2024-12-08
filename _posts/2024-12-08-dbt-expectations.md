@@ -21,7 +21,7 @@ Given
 This is a widely used tool in data engineering, and in order to try it out and evaluate this tool, I undertook the following Udemy course, the screenshots and material are based on this:
 
 [The Complete dbt (Data Build Tool) Bootcamp:](https://www.udemy.com/course/complete-dbt-data-build-tool-bootcamp-zero-to-hero-learn-dbt)
-![Microsoft AI Fundamentals](/images/AI900.png)
+![dbt bootcamp](/images/dbtHeroUdemy.png)
 
 This course covers the theory and practical application of a data project using snowflake as the data warehouse, and the open source version of dbt. What was particularly relevant for a tester are the sections covering dbt expectations<add link>. This post will explain at a high level what dbt expectations can do, how it can enable QA in a data ingestion/data transformation project rather than a hand on how to' guide.
 
@@ -37,25 +37,25 @@ When the package is imported etc. the tests are written in the schema.yml file. 
 
 #### Basic Expectations:
 
-<b>not_null:</b> Ensures that the column doesn't contain null values.
-<b>unique:</b> Verifies that all values in the column are distinct.
+<li>not_null: Ensures that the column doesn't contain null values.</li>
+<li>unique: Verifies that all values in the column are distinct.</li>
 
 #### Relationship Expectations:
 
-<b>relationships:</b> Checks if a foreign key relationship <b>exists between two columns in different models.
+</li>relationships: Checks if a foreign key relationship exists between two columns in different models.</li>
 
 #### Value-Based Expectations:
 
-<b>accepted_values:</b> Ensures that the column only contains specific values from a predefined list.
-<b>positive_value:</b> Verifies that the column values are positive numbers.
+<li>accepted_values: Ensures that the column only contains specific values from a predefined list.</li>
+<li>positive_value:</b> Verifies that the column values are positive numbers.</li>
 
 #### Statistical Expectations:
 
-#### dbt_expectations. <b>expect_table_row_count_to_equal_other_table:</b> Compares the row count of two tables.
+<li>dbt_expectations. expect_table_row_count_to_equal_other_table: Compares the row count of two tables.</li>
 
-<b>dbt_expectations.expect_column_values_to_be_of_type: </b>Checks the data type of a column.
-<b>dbt_expectations.</b>expect_column_quantile_values_to_be_between: Verifies that quantile values fall within a specific range.
-<b>dbt_expectations.expect_column_max_to_be_between:</b> Ensures that the maximum value of a column is within a certain range.
+</li>dbt_expectations.expect_column_values_to_be_of_type: Checks the data type of a column.</li>
+<li>dbt_expectations.expect_column_quantile_values_to_be_between: Verifies that quantile values fall within a specific range.</li>
+<li>dbt_expectations.expect_column_max_to_be_between: Ensures that the maximum value of a column is within a certain range.</li>
 
 #### Example test:
 
