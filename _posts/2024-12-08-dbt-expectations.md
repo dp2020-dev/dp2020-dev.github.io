@@ -16,6 +16,7 @@ Given
 [Great Expectations.io](https://greatexpectations.io/) and its open source version [dbt expectations](https://github.com/calogica/dbt-expectations) are frameworks that enable automated tests to be embedded in ingestion/transformation pipelines.
 
 <GE Image>
+![Great Expectations logo', December 2024](/images/gx_logo_horiz_color.png)
 
 This is a widely used tool in data engineering, and in order to try it out and evaluate this tool, I undertook the following Udemy course, the screenshots and material are based on this:
 
