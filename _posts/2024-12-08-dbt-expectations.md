@@ -11,8 +11,7 @@ Having been involved in data transformations in the past (e.g. moving data from 
 
 In the context of these data testing challenges, [Great Expectations.io](https://greatexpectations.io/) and its open source version [dbt expectations](https://github.com/calogica/dbt-expectations) are frameworks that enable automated tests to be embedded in ingestion/transformation pipelines.
 
-<GE Image>
-![Great Expectations logo, December 2024](/images/gx_logo_horiz_color.png)
+![Great Expectations logo, December 2024](./images/gx_logo_horiz_color.png)
 
 This is a widely used tool in data engineering, and in order to try it out and evaluate this tool, I undertook the following Udemy course, the screenshots and material are based on this course which uses Snowflake, a command line/Terminal interface and Git.
 
@@ -36,26 +35,31 @@ When the package is imported etc. the tests are written in the schema.yml file. 
 
 ### Basic Expectations:
 
+<ul>
 <li>not_null: Ensures that the column doesn't contain null values.</li>
 <li>unique: Verifies that all values in the column are distinct.</li>
+</ul>
 
 ### Relationship Expectations:
 
+<ul>
 </li>relationships: Checks if a foreign key relationship exists between two columns in different models.</li>
+</ul>
 
 ### Value-Based Expectations:
 
+<ul>
 <li>accepted_values: Ensures that the column only contains specific values from a predefined list.</li>
 <li>positive_value:</b> Verifies that the column values are positive numbers.</li>
-
+</ul>
 ### Statistical Expectations:<br>
-
+</ul>
 <li>dbt_expectations. expect_table_row_count_to_equal_other_table: Compares the row count of two tables.</li>
 
 <li>dbt_expectations.expect_column_values_to_be_of_type: Checks the data type of a column.</li>
 <li>dbt_expectations.expect_column_quantile_values_to_be_between: Verifies that quantile values fall within a specific range.</li>
 <li>dbt_expectations.expect_column_max_to_be_between: Ensures that the maximum value of a column is within a certain range.</li><br>
-
+</ul>
 ### Example test:<br>
 
 Room_type, see screenshot.
