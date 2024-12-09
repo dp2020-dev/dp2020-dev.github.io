@@ -12,16 +12,19 @@ Having been involved in data transformations in the past (e.g. moving data from 
 In the context of these data testing challenges, [Great Expectations.io](https://greatexpectations.io/) and its open source version [dbt expectations](https://github.com/calogica/dbt-expectations) are frameworks that enable automated tests to be embedded in ingestion/transformation pipelines.
 
 <GE Image>
-![Great Expectations logo', December 2024](/images/gx_logo_horiz_color.png)
+![Great Expectations logo, December 2024](/images/gx_logo_horiz_color.png)
 
-This is a widely used tool in data engineering, and in order to try it out and evaluate this tool, I undertook the following Udemy course, the screenshots and material are based on this:
+This is a widely used tool in data engineering, and in order to try it out and evaluate this tool, I undertook the following Udemy course, the screenshots and material are based on this course which uses Snowflake, a command line/Terminal interface and Git.
 
+<!--
 [The Complete dbt (Data Build Tool) Bootcamp:](https://www.udemy.com/course/complete-dbt-data-build-tool-bootcamp-zero-to-hero-learn-dbt)
-![dbt bootcamp](/images/dbtHeroUdemy.png)
+![dbt bootcamp](/images/dbtHeroUdemy.png) -->
 
-This course covers the theory and practical application of a data project using snowflake as the data warehouse, and the open source version of dbt. What was particularly relevant for a tester are the sections covering dbt expectations<add link>. This post will explain at a high level what dbt expectations can do, how it can enable QA in a data ingestion/data transformation project rather than a hand on how to' guide.
+[The Complete dbt (Data Build Tool) Bootcamp:](https://www.udemy.com/course/complete-dbt-data-build-tool-bootcamp-zero-to-hero-learn-dbt) ![dbt bootcamp](/images/dbtHeroUdemy.png)
 
-### What is dbt expectations?
+This course covers the theory and practical application of a data project using snowflake as the data warehouse, and the open source version of dbt. What was particularly relevant for a tester are the sections covering [dbt expectations](https://hub.getdbt.com/calogica/dbt_expectations/latest/). This post will explain at a high level what dbt expectations can do, how it can enable QA in a data ingestion/data transformation project rather than a hand on how to' guide.
+
+## What is dbt expectations?
 
 dbt expectations is an open source package for dbt based on Great Expectations, to enable testing in a data warehouse.
 
@@ -29,31 +32,31 @@ dbt expectations is an open source package for dbt based on Great Expectations, 
 
 Using the dbt expectations package allows data to be verified in terms of quality and accuracy at specific stages of the transformation process. It includes built in tests including not_null, unique etc. and custom tests written in sql which can extend test coverage (see /tests/no_nulls_in_dim_listings for example.)
 
-When the package is imported etc. the tests are written in the schema.yml file. This is a breakdown of the examples in [/models/schema.yml](https://github.com/dp2020-dev/completeDbtBootcamp/blob/main/models/schema.yml)
+When the package is imported etc. the tests are written in the schema.yml file. This is a breakdown of the examples in [the schema file](https://github.com/dp2020-dev/completeDbtBootcamp/blob/main/models/schema.yml).
 
-#### Basic Expectations:
+### Basic Expectations:
 
 <li>not_null: Ensures that the column doesn't contain null values.</li>
 <li>unique: Verifies that all values in the column are distinct.</li>
 
-#### Relationship Expectations:
+### Relationship Expectations:
 
 </li>relationships: Checks if a foreign key relationship exists between two columns in different models.</li>
 
-#### Value-Based Expectations:
+### Value-Based Expectations:
 
 <li>accepted_values: Ensures that the column only contains specific values from a predefined list.</li>
 <li>positive_value:</b> Verifies that the column values are positive numbers.</li>
 
-#### Statistical Expectations:
+### Statistical Expectations:<br>
 
 <li>dbt_expectations. expect_table_row_count_to_equal_other_table: Compares the row count of two tables.</li>
 
-</li>dbt_expectations.expect_column_values_to_be_of_type: Checks the data type of a column.</li>
+<li>dbt_expectations.expect_column_values_to_be_of_type: Checks the data type of a column.</li>
 <li>dbt_expectations.expect_column_quantile_values_to_be_between: Verifies that quantile values fall within a specific range.</li>
-<li>dbt_expectations.expect_column_max_to_be_between: Ensures that the maximum value of a column is within a certain range.</li>
+<li>dbt_expectations.expect_column_max_to_be_between: Ensures that the maximum value of a column is within a certain range.</li><br>
 
-#### Example test:
+### Example test:<br>
 
 Room_type, see screenshot.
 
@@ -66,7 +69,7 @@ To debug, the standard tool is dbt test --debug, but the advice on the bootcamp 
 
 In a specific example, the failing sql code is run directly against the table (in Snowflake in this example) to find where exactly the failure is.
 
-### Lineage Graph (Data Flow DAG)
+## Lineage Graph (Data Flow DAG)<br>
 
 In the section above we've looked at practical tests in dbt expectations which can be embedded in the data transformation pipeline. These tests can be included on a really useful dbt feature, the 'lineage graph' alongside the source tables, dimension, fact tables etc. to show where and when the tests run, what table it relates to etc.
 
