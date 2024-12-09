@@ -81,6 +81,6 @@ For example:
 
 The lineage graph shows the flow of data in our data warehouse, for instance we can see at a glance that {% highlight js %}dim_listings_cleansed{% endhighlight js %} is a cleansed dimension table based on the `src_listings table`.
 
-By right clicking and checking documentation for {% highlight js %} dim_listings_cleansed {% endhighlight js %} , we can check all the tests we have in place for this stage of the transformation, for instance we can tell the the `room_type` test checks the type of room as per the description.
+By right clicking and checking documentation for `dim_listings_cleansed `, we can check all the tests we have in place for this stage of the transformation, for instance we can tell the the `room_type` test checks the type of room as per the description.
 
 While it takes some additional time to understand the how to set descriptions and how to link the schema.yml to the test files (I found I had to adhere closely to a set folder structure to get this to work), the benefit of having this lineage graph and information are evidence- we can see what's tested where during the data transformation, and I feel it will save significant time for someone picking up these tests to extend coverage/adapt.
