@@ -11,7 +11,7 @@ Having been involved in data transformations in the past (e.g. moving data from 
 
 In the context of these data testing challenges, [Great Expectations.io](https://greatexpectations.io/) and its open source version [dbt expectations](https://github.com/calogica/dbt-expectations) are frameworks that enable automated tests to be embedded in ingestion/transformation pipelines.
 
-![Great Expectations logo, December 2024](./images/gx_logo_horiz_color.png)
+![Great Expectations logo, December 2024](/images/gx_logo_horiz_color.png)
 
 This is a widely used tool in data engineering, and in order to try it out and evaluate this tool, I undertook the following Udemy course, the screenshots and material are based on this course which uses Snowflake, a command line/Terminal interface and Git.
 
@@ -43,7 +43,7 @@ When the package is imported etc. the tests are written in the schema.yml file. 
 ### Relationship Expectations:
 
 <ul>
-</li>relationships: Checks if a foreign key relationship exists between two columns in different models.</li>
+<li>relationships: Checks if a foreign key relationship exists between two columns in different models.</li>
 </ul>
 
 ### Value-Based Expectations:
@@ -53,7 +53,7 @@ When the package is imported etc. the tests are written in the schema.yml file. 
 <li>positive_value:</b> Verifies that the column values are positive numbers.</li>
 </ul>
 ### Statistical Expectations:<br>
-</ul>
+<ul>
 <li>dbt_expectations. expect_table_row_count_to_equal_other_table: Compares the row count of two tables.</li>
 
 <li>dbt_expectations.expect_column_values_to_be_of_type: Checks the data type of a column.</li>
@@ -79,12 +79,14 @@ In the section above we've looked at practical tests in dbt expectations which c
 
 ![dbt lineage graph](/images/dbt-dag-3.png)
 
-Provided the test in question is included in the schema.yml and has a description value, it will be included in the correct part of the data transformation flow.
+Provided test in question is included in the schema.yml and has a description value, it will be included in the correct part of the data transformation flow.
 
-For example:
+For example, the lineage graph below shows the flow of data in our data warehouse, for instance we can see at a glance that `dim_listings_cleansed` is a cleansed dimension table based on the `src_listings table`.
 
-The lineage graph shows the flow of data in our data warehouse, for instance we can see at a glance that {% highlight js %}dim_listings_cleansed{% endhighlight js %} is a cleansed dimension table based on the `src_listings table`.
+![dbt lineage graph right click](/lineage_right_click.png)
 
 By right clicking and checking documentation for `dim_listings_cleansed `, we can check all the tests we have in place for this stage of the transformation, for instance we can tell the the `room_type` test checks the type of room as per the description.
 
-While it takes some additional time to understand the how to set descriptions and how to link the schema.yml to the test files (I found I had to adhere closely to a set folder structure to get this to work), the benefit of having this lineage graph and information are evidence- we can see what's tested where during the data transformation, and I feel it will save significant time for someone picking up these tests to extend coverage/adapt.
+![dbt docs](/docs_room_type_test.png)
+
+For reference the test itself is a built in test in the [schema.yml](https://github.com/dp2020-dev/completeDbtBootcamp/blob/ebd7310c905f63a124e43aee2725aeab9a00f8d9/models/schema.yml#L21), and while the schema clearly lists all tests its great to be able to visualise where exactly this test sits in the data pipeline, what table(s) it references and we're able to click through to read its description and code cia the graph. In a data transformation with many sources/transformations I'm sure this tool would be invaluable.
