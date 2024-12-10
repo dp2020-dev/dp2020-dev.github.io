@@ -15,44 +15,34 @@ In the context of these data testing challenges, [Great Expectations.io](https:/
 
 This is a widely used tool in data engineering, and in order to try it out and evaluate this tool, I undertook the following Udemy course, the screenshots and material are based on this course which uses Snowflake, a command line/Terminal interface and Git.
 
-<!--
-[The Complete dbt (Data Build Tool) Bootcamp:](https://www.udemy.com/course/complete-dbt-data-build-tool-bootcamp-zero-to-hero-learn-dbt)
-![dbt bootcamp](/images/dbtHeroUdemy.png) -->
-
 [The Complete dbt (Data Build Tool) Bootcamp:](https://www.udemy.com/course/complete-dbt-data-build-tool-bootcamp-zero-to-hero-learn-dbt) ![dbt bootcamp](/images/dbtHeroUdemy.png)
 
 This course covers the theory and practical application of a data project using snowflake as the data warehouse, and the open source version of dbt. What was particularly relevant for a tester are the sections covering [dbt expectations](https://hub.getdbt.com/calogica/dbt_expectations/latest/). This post will explain at a high level what dbt expectations can do, how it can enable QA in a data ingestion/data transformation project rather than a hand on how to' guide.
 
 ## What is dbt expectations?
 
-dbt expectations is an open source package for dbt based on Great Expectations, to enable testing in a data warehouse.
+dbt expectations is an open source python package for dbt based on Great Expectations, and enables integrated tests in a data warehouse.
 
-<b> How is it used to test, and why? </b>
-
-Using the dbt expectations package allows data to be verified in terms of quality and accuracy at specific stages of the transformation process. It includes built in tests including not_null, unique etc. and custom tests written in sql which can extend test coverage (see /tests/no_nulls_in_dim_listings for example.)
+Using the dbt expectations package allows data to be verified in terms of quality and accuracy at specific stages of the transformation process. It includes built in tests including not_null, unique values etc. and custom tests written in sql which can extend test coverage (see /tests/no_nulls_in_dim_listings for example.)
 
 When the package is imported etc. the tests are written in the schema.yml file. This is a breakdown of the examples in [the schema file](https://github.com/dp2020-dev/completeDbtBootcamp/blob/main/models/schema.yml).
 
-### Basic Expectations:
+### Built-in dbt Tests:
 
 <ul>
 <li>not_null: Ensures that the column doesn't contain null values.</li>
 <li>unique: Verifies that all values in the column are distinct.</li>
 </ul>
 
-### Relationship Expectations:
-
 <ul>
 <li>relationships: Checks if a foreign key relationship exists between two columns in different models.</li>
 </ul>
-
-### Value-Based Expectations:
 
 <ul>
 <li>accepted_values: Ensures that the column only contains specific values from a predefined list.</li>
 <li>positive_value:</b> Verifies that the column values are positive numbers.</li>
 </ul>
-### Statistical Expectations:<br>
+Built-in dbt-expectations Tests:
 <ul>
 <li>dbt_expectations. expect_table_row_count_to_equal_other_table: Compares the row count of two tables.</li>
 
