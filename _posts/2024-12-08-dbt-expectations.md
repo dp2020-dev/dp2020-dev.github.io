@@ -83,10 +83,10 @@ Provided test in question is included in the schema.yml and has a description va
 
 For example, the lineage graph below shows the flow of data in our data warehouse, for instance we can see at a glance that `dim_listings_cleansed` is a cleansed dimension table based on the `src_listings table`.
 
-![dbt lineage graph right click](/lineage_right_click.png)
+![dbt lineage graph right click](/images/lineage_right_click.png)
 
 By right clicking and checking documentation for `dim_listings_cleansed `, we can check all the tests we have in place for this stage of the transformation, for instance we can tell the the `room_type` test checks the type of room as per the description.
 
-![dbt docs](/docs_room_type_test.png)
+![dbt docs](/images/docs_room_type_test.png)
 
 For reference the test itself is a built in test in the [schema.yml](https://github.com/dp2020-dev/completeDbtBootcamp/blob/ebd7310c905f63a124e43aee2725aeab9a00f8d9/models/schema.yml#L21), and while the schema clearly lists all tests its great to be able to visualise where exactly this test sits in the data pipeline, what table(s) it references and we're able to click through to read its description and code cia the graph. In a data transformation with many sources/transformations I'm sure this tool would be invaluable.
