@@ -42,7 +42,7 @@ When the package is imported etc. the tests are written in the schema.yml file. 
 <li>accepted_values: Ensures that the column only contains specific values from a predefined list.</li>
 <li>positive_value:</b> Verifies that the column values are positive numbers.</li>
 </ul>
-Built-in dbt-expectations Tests:
+### Built-in dbt-expectations Tests:
 <ul>
 <li>dbt_expectations. expect_table_row_count_to_equal_other_table: Compares the row count of two tables.</li>
 
@@ -52,16 +52,14 @@ Built-in dbt-expectations Tests:
 </ul>
 ### Example test:<br>
 
-Room_type, see screenshot.
+To apply dbt expectation tests, the code is added to the schema.yml file
+, in the example below its used to check column type, expected values (including the quantile value to check values in the table are in an expected range), and a max value. We can also set if a failing test is a warning or an error.
 
-To run the tests in the schema:
-dbt test
-To run a specific test:
-dbt test --select model:dim_listings_cleansed
+![Great Expectations logo, December 2024](/images/dbtExpectSampleTests.png)
 
-To debug, the standard tool is dbt test --debug, but the advice on the bootcamp course is to run the failing test to find the sql which failed.
+To briefly summarise the practical side of dbt test, they can be run in the command line, and there is a standard `dbt test --debug` command, but interestingly the course recommended more in depth debugging via running the sql test against the source table (e.g. in our example in Snowflake) and simplifying the test code to find exactly where it failed- a good approach for a complex failure.
 
-In a specific example, the failing sql code is run directly against the table (in Snowflake in this example) to find where exactly the failure is.
+The documentation on how to run tests and debug are pretty clear and user friendly, see [About dbt debug command](https://docs.getdbt.com/reference/commands/debug)
 
 ## Lineage Graph (Data Flow DAG)<br>
 
@@ -75,8 +73,10 @@ For example, the lineage graph below shows the flow of data in our data warehous
 
 ![dbt lineage graph right click](/images/lineage_right_click.png)
 
-By right clicking and checking documentation for `dim_listings_cleansed `, we can check all the tests we have in place for this stage of the transformation, for instance we can tell the the `room_type` test checks the type of room as per the description.
+By right clicking and checking documentation for `dim_listings_cleansed`, we can check all the tests we have in place for this stage of the transformation, for instance we can tell the the `room_type` test checks the type of room as per the description.
 
 ![dbt docs](/images/docs_room_type_test.png)
 
 For reference the test itself is a built in test in the [schema.yml](https://github.com/dp2020-dev/completeDbtBootcamp/blob/ebd7310c905f63a124e43aee2725aeab9a00f8d9/models/schema.yml#L21), and while the schema clearly lists all tests its great to be able to visualise where exactly this test sits in the data pipeline, what table(s) it references and we're able to click through to read its description and code cia the graph. In a data transformation with many sources/transformations I'm sure this tool would be invaluable.
+
+** Summary **
