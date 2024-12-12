@@ -7,52 +7,42 @@ title: Using dbt expectations as part of a dbt build.
 
 ### Why data testing?
 
-Having been involved in data transformations in the past (e.g. moving data from on prem to the Azure cloud) I'm aware of the potential complexity of ensuring the quality of data from multiple sources to target, verifying the transformations at each stage and maintaining data integrity.
+Having been involved in data transformations in the past (e.g. moving data from on prem to the Azure cloud) I'm aware of the potential complexity of ensuring the quality of data taken from multiple sources into target tables, verifying the transformations at each stage and maintaining data integrity. This complexity makes manual testing onerous (espeocally given the ttarnsformations are likely to be part of an automated pipeline), and quality issues can erode the stakeholder's confidence in the end data.
 
-In the context of these data testing challenges, [Great Expectations.io](https://greatexpectations.io/) and its open source version [dbt expectations](https://github.com/calogica/dbt-expectations) are frameworks that enable automated tests to be embedded in ingestion/transformation pipelines.
+In the context of these data testing challenges, [Great Expectations.io](https://greatexpectations.io/) and its open source version [dbt expectations](https://github.com/calogica/dbt-expectations) are frameworks that enable automated tests to be embedded in data ingestion/transformation pipelines.
 
 ![Great Expectations logo, December 2024](/images/gx_logo_horiz_color.png)
 
-This is a widely used tool in data engineering, and in order to try it out and evaluate this tool, I undertook the following Udemy course, the screenshots and material are based on this course which uses Snowflake, a command line/Terminal interface and Git.
-
-<!--
-[The Complete dbt (Data Build Tool) Bootcamp:](https://www.udemy.com/course/complete-dbt-data-build-tool-bootcamp-zero-to-hero-learn-dbt)
-![dbt bootcamp](/images/dbtHeroUdemy.png) -->
+In order to try it out and evaluate this tool, I undertook the following Udemy course, the screenshots and material are based on this course which uses Snowflake, a command line/Terminal interface and Git.
 
 [The Complete dbt (Data Build Tool) Bootcamp:](https://www.udemy.com/course/complete-dbt-data-build-tool-bootcamp-zero-to-hero-learn-dbt) ![dbt bootcamp](/images/dbtHeroUdemy.png)
 
-This course covers the theory and practical application of a data project using snowflake as the data warehouse, and the open source version of dbt. What was particularly relevant for a tester are the sections covering [dbt expectations](https://hub.getdbt.com/calogica/dbt_expectations/latest/). This post will explain at a high level what dbt expectations can do, how it can enable QA in a data ingestion/data transformation project rather than a hand on how to' guide.
+This course covers the theory and practical application of a data project using snowflake as the data warehouse, and the open source version of dbt. What was particularly relevant for a tester are the sections covering [dbt expectations](https://hub.getdbt.com/calogica/dbt_expectations/latest/). This post will explain what dbt expectations can do, alongside some practical examples of how it can be applied to a data transformation project.
 
 ## What is dbt expectations?
 
-dbt expectations is an open source package for dbt based on Great Expectations, to enable testing in a data warehouse.
+dbt expectations is an open source python package for dbt based on Great Expectations, and enables integrated tests in a data warehouse.
 
-<b> How is it used to test, and why? </b>
-
-Using the dbt expectations package allows data to be verified in terms of quality and accuracy at specific stages of the transformation process. It includes built in tests including not_null, unique etc. and custom tests written in sql which can extend test coverage (see /tests/no_nulls_in_dim_listings for example.)
+Using the dbt expectations package allows data to be verified in terms of quality and accuracy at specific stages of the transformation process. It includes built in tests including not_null, unique values etc. and custom tests written in sql which can extend test coverage (see /tests/no_nulls_in_dim_listings for example.)
 
 When the package is imported etc. the tests are written in the schema.yml file. This is a breakdown of the examples in [the schema file](https://github.com/dp2020-dev/completeDbtBootcamp/blob/main/models/schema.yml).
 
-### Basic Expectations:
+### Built-in dbt Tests:
 
 <ul>
 <li>not_null: Ensures that the column doesn't contain null values.</li>
 <li>unique: Verifies that all values in the column are distinct.</li>
 </ul>
 
-### Relationship Expectations:
-
 <ul>
 <li>relationships: Checks if a foreign key relationship exists between two columns in different models.</li>
 </ul>
-
-### Value-Based Expectations:
 
 <ul>
 <li>accepted_values: Ensures that the column only contains specific values from a predefined list.</li>
 <li>positive_value:</b> Verifies that the column values are positive numbers.</li>
 </ul>
-### Statistical Expectations:<br>
+Built-in dbt-expectations Tests:
 <ul>
 <li>dbt_expectations. expect_table_row_count_to_equal_other_table: Compares the row count of two tables.</li>
 
@@ -83,10 +73,10 @@ Provided test in question is included in the schema.yml and has a description va
 
 For example, the lineage graph below shows the flow of data in our data warehouse, for instance we can see at a glance that `dim_listings_cleansed` is a cleansed dimension table based on the `src_listings table`.
 
-![dbt lineage graph right click](/lineage_right_click.png)
+![dbt lineage graph right click](/images/lineage_right_click.png)
 
 By right clicking and checking documentation for `dim_listings_cleansed `, we can check all the tests we have in place for this stage of the transformation, for instance we can tell the the `room_type` test checks the type of room as per the description.
 
-![dbt docs](/docs_room_type_test.png)
+![dbt docs](/images/docs_room_type_test.png)
 
 For reference the test itself is a built in test in the [schema.yml](https://github.com/dp2020-dev/completeDbtBootcamp/blob/ebd7310c905f63a124e43aee2725aeab9a00f8d9/models/schema.yml#L21), and while the schema clearly lists all tests its great to be able to visualise where exactly this test sits in the data pipeline, what table(s) it references and we're able to click through to read its description and code cia the graph. In a data transformation with many sources/transformations I'm sure this tool would be invaluable.
