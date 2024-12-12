@@ -7,17 +7,17 @@ title: Using dbt expectations as part of a dbt build.
 
 ### Why data testing?
 
-Having been involved in data transformations in the past (e.g. moving data from on prem to the Azure cloud) I'm aware of the potential complexity of ensuring the quality of data from multiple sources to target, verifying the transformations at each stage and maintaining data integrity.
+Having been involved in data transformations in the past (e.g. moving data from on prem to the Azure cloud) I'm aware of the potential complexity of ensuring the quality of data taken from multiple sources into target tables, verifying the transformations at each stage and maintaining data integrity. This complexity makes manual testing onerous (espeocally given the ttarnsformations are likely to be part of an automated pipeline), and quality issues can erode the stakeholder's confidence in the end data.
 
-In the context of these data testing challenges, [Great Expectations.io](https://greatexpectations.io/) and its open source version [dbt expectations](https://github.com/calogica/dbt-expectations) are frameworks that enable automated tests to be embedded in ingestion/transformation pipelines.
+In the context of these data testing challenges, [Great Expectations.io](https://greatexpectations.io/) and its open source version [dbt expectations](https://github.com/calogica/dbt-expectations) are frameworks that enable automated tests to be embedded in data ingestion/transformation pipelines.
 
 ![Great Expectations logo, December 2024](/images/gx_logo_horiz_color.png)
 
-This is a widely used tool in data engineering, and in order to try it out and evaluate this tool, I undertook the following Udemy course, the screenshots and material are based on this course which uses Snowflake, a command line/Terminal interface and Git.
+In order to try it out and evaluate this tool, I undertook the following Udemy course, the screenshots and material are based on this course which uses Snowflake, a command line/Terminal interface and Git.
 
 [The Complete dbt (Data Build Tool) Bootcamp:](https://www.udemy.com/course/complete-dbt-data-build-tool-bootcamp-zero-to-hero-learn-dbt) ![dbt bootcamp](/images/dbtHeroUdemy.png)
 
-This course covers the theory and practical application of a data project using snowflake as the data warehouse, and the open source version of dbt. What was particularly relevant for a tester are the sections covering [dbt expectations](https://hub.getdbt.com/calogica/dbt_expectations/latest/). This post will explain at a high level what dbt expectations can do, how it can enable QA in a data ingestion/data transformation project rather than a hand on how to' guide.
+This course covers the theory and practical application of a data project using snowflake as the data warehouse, and the open source version of dbt. What was particularly relevant for a tester are the sections covering [dbt expectations](https://hub.getdbt.com/calogica/dbt_expectations/latest/). This post will explain what dbt expectations can do, alongside some practical examples of how it can be applied to a data transformation project.
 
 ## What is dbt expectations?
 
