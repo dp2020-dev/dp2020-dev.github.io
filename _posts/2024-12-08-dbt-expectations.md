@@ -3,7 +3,8 @@ layout: post
 title: Using dbt-expectations as part of a dbt build.
 ---
 
-<i> The objective of the blog post is to give a practical overview of the data transformation testing tool Great Expectations (specifically the open source version dbt-expectations. </i>
+<i> In order to evaluate and give an overview of dbt-expectations, this dbt project is based on a dbt data build course (more info below). The post gives a summary of the different types of data tests applied to the data transformation, with examples and explanations as to what's being tested and how.
+</i>
 
 ### Why data testing?
 
@@ -25,7 +26,7 @@ dbt-expectations is an open source python package for dbt based on Great Expecta
 
 This allows us to extend the coverage of the dbt core built in tests) using a range of tests within the package. The examples below include the built in tests, dbt-expecations tests, these tests are written in the schema.yml file. This is a breakdown of the examples in [the schema file](https://github.com/dp2020-dev/completeDbtBootcamp/blob/main/models/schema.yml).
 
-In addition to these tests captured in schema file, we also have customer sql tests (exampel below).
+In addition to these tests captured in schema file, we also have customer sql tests (example below).
 
 ### Built-in dbt Tests:
 
@@ -40,7 +41,6 @@ In addition to these tests captured in schema file, we also have customer sql te
 <li>accepted_values: Ensures that the column only contains specific values from a predefined list.</li>
 <li>positive_value:</b> Verifies that the column values are positive numbers.</li>
 </ul>
-#### Example dbt-expectations test:<br>
 
 ### Built-in dbt-expectations Tests:
 
@@ -60,15 +60,15 @@ To apply dbt expectation tests, the code is added to the schema.yml file
 
 ### Built-in custom sql Tests:
 
-The third type of dbt test used in this project is a custom sql test.
+The third type of dbt test used in this project is a <b>custom sql test</b>.
 
-This simple sql custom test checks the dim_listings_cleansed' table for any listings with < 1 night.
+This simple sql custom test checks the 'dim_listings_cleansed' table for any listings with < 1 night.
 
 ![Custom sql example- min nights](/images/dim_listings_min_nights.png)
 
 Custom tests sit outside the dbt core and dbt-expectactions tests and can
 extend test coverage to cover edge cases. They are also flexible in enabling ad hoc testing to investigate
-scenarios, or to be part of the CI/CD pipeline- see an example of how we can trace custom tests to the data lineage graph in the [lineage graph section.](#dag_lineage)
+scenarios, or to be part of the CI/CD pipeline- see an example of how we can trace the `dim_listings_min_nights` custom rest on the data lineage graph in the [lineage graph section.](#dag_lineage)
 
 ## Debugging<br>
 
