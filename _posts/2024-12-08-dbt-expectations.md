@@ -1,15 +1,15 @@
 ---
 layout: post
-title: Using dbt expectations as part of a dbt build.
+title: Using dbt-expectations as part of a dbt build.
 ---
 
-<i> The objective of the blog post is to give a practical overview of the data transformation testing tool Great Expectations (specifically the open source version dbt expectations. </i>
+<i> The objective of the blog post is to give a practical overview of the data transformation testing tool Great Expectations (specifically the open source version dbt-expectations. </i>
 
 ### Why data testing?
 
-Having been involved in data transformations in the past (e.g. moving data from on prem to the Azure cloud) I'm aware of the potential complexity of ensuring the quality of data taken from multiple sources into target tables, verifying the transformations at each stage and maintaining data integrity. This complexity makes manual testing onerous (espeocally given the ttarnsformations are likely to be part of an automated pipeline), and quality issues can erode the stakeholder's confidence in the end data.
+From my experience with data transformation projects in the past (e.g. moving data from on prem to the Azure cloud) I'm aware of the challenges of ensuring the quality of data taken from multiple sources into target tables, the transformations at each stage and maintaining this quality continuously in a CI/CD delivery. This complexity makes manual testing onerous (especially given the transformations are likely to be part of an automated pipeline), and quality issues can erode the stakeholder's confidence in the end data.
 
-In the context of these data testing challenges, [Great Expectations.io](https://greatexpectations.io/) and its open source version [dbt expectations](https://github.com/calogica/dbt-expectations) are frameworks that enable automated tests to be embedded in data ingestion/transformation pipelines.
+In the context of these data testing challenges, [Great Expectations.io](https://greatexpectations.io/) and its open source version [dbt-expectations](https://github.com/calogica/dbt-expectations) are frameworks that enable automated tests to be embedded in data ingestion/transformation pipelines.
 
 ![Great Expectations logo, December 2024](/images/gx_logo_horiz_color.png)
 
@@ -19,13 +19,13 @@ In order to try it out and evaluate this tool, I undertook the following Udemy c
 
 This course covers the theory and practical application of a data project using snowflake as the data warehouse, and the open source version of dbt. What was particularly relevant for a tester are the sections covering [dbt expectations](https://hub.getdbt.com/calogica/dbt_expectations/latest/). This post will explain what dbt expectations can do, alongside some practical examples of how it can be applied to a data transformation project.
 
-## What is dbt expectations?
+## What is dbt-expectations?
 
-dbt expectations is an open source python package for dbt based on Great Expectations, and enables integrated tests in a data warehouse.
+dbt-expectations is an open source python package for dbt based on Great Expectations, and enables integrated tests in a data warehouse.
 
-Using the dbt expectations package allows data to be verified in terms of quality and accuracy at specific stages of the transformation process. It includes built in tests including not_null, unique values etc. and custom tests written in sql which can extend test coverage (see /tests/no_nulls_in_dim_listings for example.)
+This allows us to extend the coverage of the dbt core built in tests) using a range of tests within the package. The examples below include the built in tests, dbt-expecations tests, these tests are written in the schema.yml file. This is a breakdown of the examples in [the schema file](https://github.com/dp2020-dev/completeDbtBootcamp/blob/main/models/schema.yml).
 
-When the package is imported etc. the tests are written in the schema.yml file. This is a breakdown of the examples in [the schema file](https://github.com/dp2020-dev/completeDbtBootcamp/blob/main/models/schema.yml).
+In addition to these tests captured in schema file, we also have customer sql tests (exampel below).
 
 ### Built-in dbt Tests:
 
@@ -33,16 +33,17 @@ When the package is imported etc. the tests are written in the schema.yml file. 
 <li>not_null: Ensures that the column doesn't contain null values.</li>
 <li>unique: Verifies that all values in the column are distinct.</li>
 </ul>
-
 <ul>
 <li>relationships: Checks if a foreign key relationship exists between two columns in different models.</li>
 </ul>
-
 <ul>
 <li>accepted_values: Ensures that the column only contains specific values from a predefined list.</li>
 <li>positive_value:</b> Verifies that the column values are positive numbers.</li>
 </ul>
+#### Example dbt-expectations test:<br>
+
 ### Built-in dbt-expectations Tests:
+
 <ul>
 <li>dbt_expectations. expect_table_row_count_to_equal_other_table: Compares the row count of two tables.</li>
 
@@ -50,20 +51,38 @@ When the package is imported etc. the tests are written in the schema.yml file. 
 <li>dbt_expectations.expect_column_quantile_values_to_be_between: Verifies that quantile values fall within a specific range.</li>
 <li>dbt_expectations.expect_column_max_to_be_between: Ensures that the maximum value of a column is within a certain range.</li><br>
 </ul>
-### Example test:<br>
+#### Example dbt-expectations test:<br>
 
 To apply dbt expectation tests, the code is added to the schema.yml file
 , in the example below its used to check column type, expected values (including the quantile value to check values in the table are in an expected range), and a max value. We can also set if a failing test is a warning or an error.
 
 ![Great Expectations logo, December 2024](/images/dbtExpectSampleTests.png)
 
-To briefly summarise the practical side of dbt test, they can be run in the command line, and there is a standard `dbt test --debug` command, but interestingly the course recommended more in depth debugging via running the sql test against the source table (e.g. in our example in Snowflake) and simplifying the test code to find exactly where it failed- a good approach for a complex failure.
+### Built-in custom sql Tests:
 
-The documentation on how to run tests and debug are pretty clear and user friendly, see [About dbt debug command](https://docs.getdbt.com/reference/commands/debug)
+The third type of dbt test used in this project is a custom sql test.
+
+This simple sql custom test checks the dim_listings_cleansed' table for any listings with < 1 night.
+
+![Custom sql example- min nights](/images/dim_listings_min_nights.png)
+
+Custom tests sit outside the dbt core and dbt-expectactions tests and can
+extend test coverage to cover edge cases. They are also flexible in enabling ad hoc testing to investigate
+scenarios, or to be part of the CI/CD pipeline- see an example of how we can trace custom tests to the data lineage graph in the [lineage graph section.](#dag_lineage)
+
+## Debugging<br>
+
+To briefly summarise the practical side of dbt test, they can be run in the command line, and there is a
+standard `dbt test --debug` command, but interestingly the course recommended more in depth debugging
+via running the sql test against the source table (e.g. in our example in Snowflake) and simplifying the test code to find exactly where it failed- a good approach for a complex failure.
+
+The documentation on how to run tests and debug is pretty clear and user friendly, see [About dbt debug command](https://docs.getdbt.com/reference/commands/debug)
 
 ## Lineage Graph (Data Flow DAG)<br>
 
-In the section above we've looked at practical tests in dbt expectations which can be embedded in the data transformation pipeline. These tests can be included on a really useful dbt feature, the 'lineage graph' alongside the source tables, dimension, fact tables etc. to show where and when the tests run, what table it relates to etc.
+In the section above we've looked at practical tests in dbt-expectations which can be embedded in the data transformation pipeline. These tests can be included on a really useful dbt feature, the 'lineage graph' alongside the source tables, dimension, fact tables etc. to show where and when the tests run, what table it relates to etc.
+
+<a id="dag_lineage"></a>
 
 ![dbt lineage graph](/images/dbt-dag-3.png)
 
