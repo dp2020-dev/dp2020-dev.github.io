@@ -3,29 +3,32 @@ layout: post
 title: Using dbt-expectations as part of a dbt build.
 ---
 
-<i> The objective of the blog post is to give a practical overview of the data transformation testing tool Great Expectations (specifically the open source version dbt-expectations. </i>
+<i> The post gives a summary of the different types of data tests applied to the data transformation including dbt-expectations. The content is based on a [dbt bootcamp course](#dbt_bootcamp), with examples and explanations as to what's being tested and how.
+</i>
+
+[dbt Complete Bootcamp](https://github.com/dp2020-dev/completeDbtBootcamp)
 
 ### Why data testing?
 
 From my experience with data transformation projects in the past (e.g. moving data from on prem to the Azure cloud) I'm aware of the challenges of ensuring the quality of data taken from multiple sources into target tables, the transformations at each stage and maintaining this quality continuously in a CI/CD delivery. This complexity makes manual testing onerous (especially given the transformations are likely to be part of an automated pipeline), and quality issues can erode the stakeholder's confidence in the end data.
 
-In the context of these data testing challenges, [Great Expectations.io](https://greatexpectations.io/) and its open source version [dbt-expectations](https://github.com/calogica/dbt-expectations) are frameworks that enable automated tests to be embedded in data ingestion/transformation pipelines.
+In the context of these data testing challenges, [Great Expectations.io](https://greatexpectations.io/) and the dbt-specific version [dbt-expectations](https://github.com/calogica/dbt-expectations) are frameworks that enable automated tests to be embedded in data ingestion/transformation pipelines.
 
 ![Great Expectations logo, December 2024](/images/gx_logo_horiz_color.png)
 
 In order to try it out and evaluate this tool, I undertook the following Udemy course, the screenshots and material are based on this course which uses Snowflake, a command line/Terminal interface and Git.
-
+<a id="dbt_bootcamp"></a>
 [The Complete dbt (Data Build Tool) Bootcamp:](https://www.udemy.com/course/complete-dbt-data-build-tool-bootcamp-zero-to-hero-learn-dbt) ![dbt bootcamp](/images/dbtHeroUdemy.png)
 
 This course covers the theory and practical application of a data project using snowflake as the data warehouse, and the open source version of dbt. What was particularly relevant for a tester are the sections covering [dbt expectations](https://hub.getdbt.com/calogica/dbt_expectations/latest/). This post will explain what dbt expectations can do, alongside some practical examples of how it can be applied to a data transformation project.
 
 ## What is dbt-expectations?
 
-dbt-expectations is an open source python package for dbt based on Great Expectations, and enables integrated tests in a data warehouse.
+dbt-expectations is an open source python package for dbt based on Great Expectations, and enables integrated tests in data warehouses supported by dbt.
 
-This allows us to extend the coverage of the dbt core built in tests) using a range of tests within the package. The examples below include the built in tests, dbt-expecations tests, these tests are written in the schema.yml file. This is a breakdown of the examples in [the schema file](https://github.com/dp2020-dev/completeDbtBootcamp/blob/main/models/schema.yml).
+This allows us to extend the coverage of the dbt core built in tests) using a range of tests within the package. The examples below include the built in tests, dbt-expectations tests, these tests are written in the schema.yml file. This is a breakdown of the examples in [the schema file](https://github.com/dp2020-dev/completeDbtBootcamp/blob/main/models/schema.yml).
 
-In addition to these tests captured in schema file, we also have customer sql tests (exampel below).
+In addition to these tests captured in schema file, we also have customer sql tests (example below).
 
 ### Built-in dbt Tests:
 
@@ -40,7 +43,6 @@ In addition to these tests captured in schema file, we also have customer sql te
 <li>accepted_values: Ensures that the column only contains specific values from a predefined list.</li>
 <li>positive_value:</b> Verifies that the column values are positive numbers.</li>
 </ul>
-#### Example dbt-expectations test:<br>
 
 ### Built-in dbt-expectations Tests:
 
@@ -60,23 +62,22 @@ To apply dbt expectation tests, the code is added to the schema.yml file
 
 ### Built-in custom sql Tests:
 
-The third type of dbt test used in this project is a custom sql test.
+The third type of dbt test used in this project is a <b>custom sql test</b>.
 
-This simple sql custom test checks the dim_listings_cleansed' table for any listings with < 1 night.
+This simple sql custom test checks the 'dim_listings_cleansed' table for any listings with < 1 night.
 
 ![Custom sql example- min nights](/images/dim_listings_min_nights.png)
 
 Custom tests sit outside the dbt core and dbt-expectactions tests and can
 extend test coverage to cover edge cases. They are also flexible in enabling ad hoc testing to investigate
-scenarios, or to be part of the CI/CD pipeline- see an example of how we can trace custom tests to the data lineage graph in the [lineage graph section.](#dag_lineage)
+scenarios, or to be part of the CI/CD pipeline- see an example of how we can trace the `dim_listings_min_nights` custom rest on the data lineage graph in the [lineage graph section.](#dag_lineage)
 
 ## Debugging<br>
 
-To briefly summarise the practical side of dbt test, they can be run in the command line, and there is a
-standard `dbt test --debug` command, but interestingly the course recommended more in depth debugging
-via running the sql test against the source table (e.g. in our example in Snowflake) and simplifying the test code to find exactly where it failed- a good approach for a complex failure.
+Running `dbt test --debug` command will run all the sql tests against the database connections, the console logs all the test names and the results. However to dig into why a given test failed,
+its possible to run the actual sql test against the source table (e.g. in this project in Snowflake) and simplifying the test code to find exactly where it failed- a good approach for a complex failure.
 
-The documentation on how to run tests and debug is pretty clear and user friendly, see [About dbt debug command](https://docs.getdbt.com/reference/commands/debug)
+The documentation on how to run tests and debug is clear and user friendly, see [About dbt debug command](https://docs.getdbt.com/reference/commands/debug)
 
 ## Lineage Graph (Data Flow DAG)<br>
 
