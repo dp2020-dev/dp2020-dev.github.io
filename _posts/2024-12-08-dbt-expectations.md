@@ -36,11 +36,7 @@ Here is an explanation of what these example tests do, applied to the data trans
 <ul>
 <li>not_null: Ensures that the column doesn't contain null values.</li>
 <li>unique: Verifies that all values in the column are distinct.</li>
-</ul>
-<ul>
 <li>relationships: Checks if a foreign key relationship exists between two columns in different models.</li>
-</ul>
-<ul>
 <li>accepted_values: Ensures that the column only contains specific values from a predefined list.</li>
 <li>positive_value:</b> Verifies that the column values are positive numbers.</li>
 </ul>
