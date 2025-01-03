@@ -3,20 +3,20 @@ layout: post
 title: Using dbt-expectations as part of a dbt build.
 ---
 
-<i> The post gives a summary of the different types of data tests applied to the data transformation including dbt-expectations. The content is based on a [dbt bootcamp course](#dbt_bootcamp), with examples and explanations as to what's being tested and how. The examples in this post are also available in Github:
+<i> The post gives a summary of the different types of data tests that can be applied to a data transformation project, including the use of dbt-expectations. The content is based on a [dbt bootcamp course](#dbt_bootcamp), with examples and explanations as to what's being tested and how. The examples are available in Github:
 </i>
 
-[dbt Complete Bootcamp repo.](https://github.com/dp2020-dev/completeDbtBootcamp){:target="\_blank"}
+[dbt Complete Bootcamp repo](https://github.com/dp2020-dev/completeDbtBootcamp){:target="\_blank"}
 
 ### Why data testing?
 
-From my experience with data transformation projects in the past (e.g. moving data from on prem to the Azure cloud) I'm aware of the challenges of ensuring the quality of data taken from multiple sources into target tables, the transformations at each stage and maintaining this quality continuously in a CI/CD delivery. This complexity makes manual testing onerous (especially given the transformations are likely to be part of an automated pipeline), and quality issues can erode the stakeholder's confidence in the end data.
+From my experience with data transformation projects in the past (e.g. moving data from on prem to the Azure cloud) I'm aware of the challenges of ensuring the quality of data taken from multiple sources into target tables, the transformations at each stage and maintaining this quality continuously in a CI/CD delivery. This complexity makes manual testing onerous (especially given the transformations are likely to be part of an automated pipeline), with an underlying risk that errors in the end data can erode the user's confidence in the data being consumed.
 
-In the context of these data testing challenges, [Great Expectations.io](https://greatexpectations.io/) and the dbt-specific version [dbt-expectations](https://github.com/calogica/dbt-expectations) are frameworks that enable automated tests to be embedded in data ingestion/transformation pipelines.
+Given this context, being able to create efficient, discrete scripted tests at the key stages of a data pipeline using sql and built in dbt tests are a powerful, efficient way to ensure data quality throughout a data transformation project. [Great Expectations.io](https://greatexpectations.io/) and the dbt-specific version [dbt-expectations](https://github.com/calogica/dbt-expectations) offer a user friendly framework to further extend test coverage.
 
 ![Great Expectations logo, December 2024](/images/gx_logo_horiz_color.png)
 
-The following Udemy 'bootcamp' course was an excellent introduction to dbt and its test tools, and the screenshots and material in this post are based on this course:
+To see these test tools (dbt tests, gbt-expectations and custom sql tests) in action the following Udemy 'bootcamp' course was an excellent introduction to dbt and its test tools, and the screenshots and material in this post are based on this course:
 
 <a id="dbt_bootcamp"></a>
 [The Complete dbt (Data Build Tool) Bootcamp:](https://www.udemy.com/course/complete-dbt-data-build-tool-bootcamp-zero-to-hero-learn-dbt) ![dbt bootcamp](/images/dbtHeroUdemy.png)
@@ -47,7 +47,7 @@ Here is an explanation of what these example tests do, applied to the data trans
 <li>dbt_expectations. expect_table_row_count_to_equal_other_table: Compares the row count of two tables.</li>
 
 <li>dbt_expectations.expect_column_values_to_be_of_type: Checks the data type of a column.</li>
-<li>dbt_expectations.expect_column_quantile_values_to_be_between: Verifies that quantile values fall within a specific range.</li>
+<a id="quantile_test"></a> <li>dbt_expectations.expect_column_quantile_values_to_be_between: Verifies that quantile values fall within a specific range.</li>
 <li>dbt_expectations.expect_column_max_to_be_between: Ensures that the maximum value of a column is within a certain range.</li><br>
 </ul>
 #### Example dbt-expectations test:<br>
@@ -94,6 +94,14 @@ By right clicking and checking documentation for `dim_listings_cleansed`, we can
 
 ![dbt docs](/images/docs_room_type_test.png)
 
-For reference the test itself is a built in test in the [schema.yml](https://github.com/dp2020-dev/completeDbtBootcamp/blob/ebd7310c905f63a124e43aee2725aeab9a00f8d9/models/schema.yml#L21), and while the schema clearly lists all tests its great to be able to visualise where exactly this test sits in the data pipeline, what table(s) it references and we're able to click through to read its description and code cia the graph. In a data transformation with many sources/transformations this tool would be invaluable.
+For reference the test itself is a built in test in the [schema.yml](https://github.com/dp2020-dev/completeDbtBootcamp/blob/ebd7310c905f63a124e43aee2725aeab9a00f8d9/models/schema.yml#L21), and while the schema clearly lists all tests its great to be able to visualise where exactly this test sits in the data pipeline, what table(s) it references and we're able to click through to read its description and code via the graph. In a data transformation with many sources/transformations this tool would be invaluable.
 
-** Summary **
+# Summary
+
+Using dbt and debt-expectations in the boot camp has given me an insight into some of the effective tools available to verify data at each stage of a transformation pipeline.
+
+Firstly, being able to apply simple, efficient tests at key stages of the data pipelines gives us assurance as the data is ingested and transformed at each stage. Dbt-expectations extends this coverage, for example
+
+Dbt-expectations allows us to extend that coverage, for example the boot camp used the [expect_column_quantile_values_to_be_between](quantile_test) test to flag a warning if a value in the top 1% of prices for a listing is outside a given range. So this is more of check for anomalies in the data based on our use case, and is a great example of how these tools can allow us to apply some effective quality assurance to a data transformation project.
+
+Finally, while not strictly speaking a tets tool/feature, I expect a tester would find the [dag diagrams](dag_lineage) a really useful tool to keep track of what data is ingested where, how its transformed and which tests are applied to it.
