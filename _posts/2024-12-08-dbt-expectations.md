@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Using dbt-expectations as part of a dbt build.
+title: Test tools available in a dbt data transformation project, including dbt-expectations.
 ---
 
 <i> The post gives a summary of the different types of data tests that can be applied to a data transformation project, including the use of dbt-expectations. The content is based on a [dbt bootcamp course](#dbt_bootcamp), with examples and explanations as to what's being tested and how. The examples are available in Github:
@@ -21,15 +21,9 @@ To see these test tools (dbt tests, gbt-expectations and custom sql tests) in ac
 <a id="dbt_bootcamp"></a>
 [The Complete dbt (Data Build Tool) Bootcamp:](https://www.udemy.com/course/complete-dbt-data-build-tool-bootcamp-zero-to-hero-learn-dbt) ![dbt bootcamp](/images/dbtHeroUdemy.png)
 
-The boot camp covers the theory and practical application of a data project using snowflake as the data warehouse, and the open source version of dbt. What was particularly relevant for a tester are the sections covering [dbt expectations](https://hub.getdbt.com/calogica/dbt_expectations/latest/). This post will explain what dbt expectations can do, alongside some practical examples of how it can be applied to a data transformation project.
+The boot camp covers the theory and practical application of a data project using snowflake as the data warehouse, and the open source version of dbt. What was particularly relevant for a tester are the sections covering testing which include [dbt expectations](https://hub.getdbt.com/calogica/dbt_expectations/latest/).
 
-## What is dbt-expectations?
-
-dbt-expectations is an open source python package for dbt based on Great Expectations, and enables integrated tests in data warehouses supported by dbt.
-
-This allows us to extend the coverage of the dbt core (i.e. the built in tests) using a range of tests within the package. The examples below include the built in tests, dbt-expectations tests and custom sql tests (effectively macros). These tests are written in the schema.yml file as per this example in [the schema file](https://github.com/dp2020-dev/completeDbtBootcamp/blob/main/models/schema.yml).
-
-Here is an explanation of what these example tests do, applied to the data transformation example in [this project:](https://github.com/dp2020-dev/completeDbtBootcamp){:target="\_blank"}
+The following section covers examples and explanations of what these 3 types of tests can do, using the boot camp project as [an example:](https://github.com/dp2020-dev/completeDbtBootcamp){:target="\_blank"}
 
 ### Built-in dbt Tests:
 
@@ -42,6 +36,12 @@ Here is an explanation of what these example tests do, applied to the data trans
 </ul>
 
 ### Built-in dbt-expectations Tests:
+
+#### What is dbt-expectations?
+
+dbt-expectations is an open source python package for dbt based on Great Expectations, and enables integrated tests in data warehouses supported by dbt.
+
+This allows us to extend the coverage of the dbt core (i.e. the built in tests) using a range of tests within the package. The examples below include the built in tests, dbt-expectations tests and custom sql tests (effectively macros). These tests are written in the schema.yml file as per this example in [the schema file](https://github.com/dp2020-dev/completeDbtBootcamp/blob/main/models/schema.yml).
 
 <ul>
 <li>dbt_expectations. expect_table_row_count_to_equal_other_table: Compares the row count of two tables.</li>
@@ -65,7 +65,7 @@ This simple sql custom test checks the 'dim_listings_cleansed' table for any lis
 
 ![Custom sql example- min nights](/images/dim_listings_min_nights.png)
 
-Custom tests sit outside the dbt core and dbt-expectactions tests and can
+Custom tests sit outside the dbt core and dbt-expectations tests and can
 extend test coverage to cover edge cases. They are also flexible in enabling ad hoc testing to investigate
 scenarios, or to be part of the CI/CD pipeline- see an example of how we can trace the `dim_listings_min_nights` custom rest on the data lineage graph in the [lineage graph section.](#dag_lineage)
 
@@ -98,10 +98,12 @@ For reference the test itself is a built in test in the [schema.yml](https://git
 
 # Summary
 
-Using dbt and debt-expectations in the boot camp has given me an insight into some of the effective tools available to verify data at each stage of a transformation pipeline.
+As mentioned I have had experience of a data transformation project (from on prem to Azure cloud) so this boot camp has been really useful in demonstrating the value and effectiveness of the test tools available to us now to verify data at each stage of a transformation pipeline.
 
-Firstly, being able to apply simple, efficient tests at key stages of the data pipelines gives us assurance as the data is ingested and transformed at each stage. Dbt-expectations extends this coverage, for example
+The [dbt core](#[Built-in dbt Tests:]) tests are simple, efficient sql tests at key stages of the data pipelines gives us assurance as the data is ingested and transformed at each stage.
 
-Dbt-expectations allows us to extend that coverage, for example the boot camp used the [expect_column_quantile_values_to_be_between](quantile_test) test to flag a warning if a value in the top 1% of prices for a listing is outside a given range. So this is more of check for anomalies in the data based on our use case, and is a great example of how these tools can allow us to apply some effective quality assurance to a data transformation project.
+[Dbt-expectations](#[Built-in dbt-expectations Tests:]) allows us to extend the test coverage by enabling more advanced validations like expected percentiles, ranges, and more complex rules. For example the boot camp uses the [expect_column_quantile_values_to_be_between](quantile_test) test to flag a warning if a value in the top 1% of prices for a listing is outside a given range. So this is more of check for anomalies in the data based on our use case, and is a great example of how these tools can allow us to apply some effective quality assurance to a data transformation project.
 
 Finally, while not strictly speaking a tets tool/feature, I expect a tester would find the [dag diagrams](dag_lineage) a really useful tool to keep track of what data is ingested where, how its transformed and which tests are applied to it.
+
+I found there was some overhead to setting up the project structure so that the yaml picked up the right references, and that each of the 3 different types of tests were configured properly, but once up and running I was able to add more tests and extend test coverage. This was just a boot camp exercise but I feel dbt-Expectations in particular would be useful from a QA perspective- in collaboration with the end user/stakeholder a tester could start thinking of qualitative tests.
