@@ -1,12 +1,12 @@
 ---
 layout: post
-title: Test tools available in a dbt data transformation project, including dbt-expectations.
+title: Testing dbt data transformations, including dbt-expectations.
 ---
 
 <i> The post gives a summary of the different types of data tests that can be applied to a data transformation project, including the use of dbt-expectations. The content is based on a [dbt bootcamp course](#dbt_bootcamp), with examples and explanations as to what's being tested and how. The examples are available in Github:
 </i>
 
-[dbt Complete Bootcamp repo](https://github.com/dp2020-dev/completeDbtBootcamp){:target="\_blank"}
+[dbt complete bootcamp repo](https://github.com/dp2020-dev/completeDbtBootcamp){:target="\_blank"}
 
 ### Why data testing?
 
@@ -98,12 +98,10 @@ For reference the test itself is a built in test in the [schema.yml](https://git
 
 # Summary
 
-As mentioned I have had experience of a data transformation project (from on prem to Azure cloud) so this boot camp has been really useful in demonstrating the value and effectiveness of the test tools available to us now to verify data at each stage of a transformation pipeline.
+The different types of test tools used in this project has demonstrated how a tester can add value to a data transformation project. Firstly, the [dbt core](#[Built-in dbt Tests:]) tests are simple, efficient sql tests at key stages of the data pipelines gives us assurance as the data is ingested and transformed at each stage.
 
-The [dbt core](#[Built-in dbt Tests:]) tests are simple, efficient sql tests at key stages of the data pipelines gives us assurance as the data is ingested and transformed at each stage.
-
-[Dbt-expectations](#[Built-in dbt-expectations Tests:]) allows us to extend the test coverage by enabling more advanced validations like expected percentiles, ranges, and more complex rules. For example the boot camp uses the [expect_column_quantile_values_to_be_between](quantile_test) test to flag a warning if a value in the top 1% of prices for a listing is outside a given range. So this is more of check for anomalies in the data based on our use case, and is a great example of how these tools can allow us to apply some effective quality assurance to a data transformation project.
+[Dbt-expectations](#[Built-in dbt-expectations Tests:]) allows us to extend the test coverage by enabling more advanced validations like expected percentiles, ranges, and more complex rules. For example the boot camp uses the [expect_column_quantile_values_to_be_between](quantile_test) test to flag a warning if a value in the top 1% of prices for a listing is outside a given range. This is a check for anomalies in the data based on our use case, dbt-Expectations in particular would be useful from a QA perspective- in collaboration with the end user/stakeholder a tester could start thinking of qualitative tests.
 
 Finally, while not strictly speaking a tets tool/feature, I expect a tester would find the [dag diagrams](dag_lineage) a really useful tool to keep track of what data is ingested where, how its transformed and which tests are applied to it.
 
-I found there was some overhead to setting up the project structure so that the yaml picked up the right references, and that each of the 3 different types of tests were configured properly, but once up and running I was able to add more tests and extend test coverage. This was just a boot camp exercise but I feel dbt-Expectations in particular would be useful from a QA perspective- in collaboration with the end user/stakeholder a tester could start thinking of qualitative tests.
+I found there was some overhead to setting up the project structure so that the yaml picked up the right references, and that each of the 3 different types of tests were configured properly, but once up and running I was able to add more tests and extend test coverage. I can start thinking of more potential validation tests via dbt expectations, so again these tools would enable a tester to work with the project/stakeholders to really start adding value around not just the data itself but how its used by the stakeholders.
