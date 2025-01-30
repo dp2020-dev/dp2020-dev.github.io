@@ -9,14 +9,9 @@ To further my knowledge and skills I joined a tech consultancy to gain hands on 
 
 Working in successful, productive agile teams in CI/CD projects has given me a great insight into how automated testing fits into an effective project delivery, the role quality and testing plays in this and a technical understanding of the tools and technology involved.
 
-<!-- <script src="https://platform.linkedin.com/badges/js/profile.js" async defer type="text/javascript"></script>
+<script src="https://platform.linkedin.com/badges/js/profile.js" async defer type="text/javascript"></script>
 
-<div class="badge-base LI-profile-badge" data-locale="en_US" data-size="medium" data-theme="dark" data-type="VERTICAL" data-vanity="daniel-phillips-ba99161b8" data-version="v1"><a class="badge-base__link LI-simple-link" href="https://uk.linkedin.com/in/daniel-phillips-ba99161b8?trk=profile-badge">daniel.phillips@testiotech.com</a></div> -->
-
-<div class="badge-container">  <div class="badge-base LI-profile-badge" data-locale="en_US" data-size="medium" data-theme="dark" data-type="VERTICAL" data-vanity="daniel-phillips-ba99161b8" data-version="v1">
-    <a class="badge-base__link LI-simple-link" href="https://uk.linkedin.com/in/daniel-phillips-ba99161b8?trk=profile-badge">daniel.phillips@testiotech.com</a>
-  </div>
-</div>
+<div class="badge-base LI-profile-badge" data-locale="en_US" data-size="medium" data-theme="dark" data-type="VERTICAL" data-vanity="daniel-phillips-ba99161b8" data-version="v1"><a class="badge-base__link LI-simple-link" href="https://uk.linkedin.com/in/daniel-phillips-ba99161b8?trk=profile-badge">daniel.phillips@testiotech.com</a><br></div>
 
 <style>
   .badge-container {
